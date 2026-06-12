@@ -1,0 +1,19 @@
+{
+	"name": "@otp-service/api",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"start": "node dist/index.js",
+		"typecheck": "tsc --noEmit",
+		"clean": "rm -rf dist *.tsbuildinfo"
+	},
+	"dependencies": {
+		"@otp-service/core": "workspace:*"
+	},
+	"devDependencies": {
+		"typescript": "^5.5.0"
+	}
+}

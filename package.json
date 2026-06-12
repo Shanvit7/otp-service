@@ -1,0 +1,39 @@
+{
+	"name": "otp-service",
+	"version": "0.0.0",
+	"private": true,
+	"author": "Shanvit S Shetty <shanvit7@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"build": "pnpm -r build",
+		"dev": "pnpm -r --parallel dev",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"format": "biome format --write .",
+		"test": "pnpm -r test",
+		"typecheck": "pnpm -r typecheck",
+		"clean": "pnpm -r clean",
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.16",
+		"husky": "^9.1.7",
+		"lint-staged": "^17.0.7",
+		"tsup": "^8.5.1",
+		"typescript": "^5.5.0"
+	},
+	"lint-staged": {
+		"*.{ts,tsx,js,jsx,json}": [
+			"biome check --write --no-errors-on-unmatched"
+		]
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
+	},
+	"engines": {
+		"node": ">=20",
+		"pnpm": ">=9"
+	}
+}
