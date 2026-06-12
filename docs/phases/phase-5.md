@@ -262,14 +262,14 @@ otp-service/
 
 ## Exit Criteria
 
-- [ ] `docker build -f apps/api/Dockerfile .` completes successfully from repo root
-- [ ] `docker compose up` starts all 5 containers (redis, api_1/2/3, nginx)
-- [ ] `curl http://localhost/health` returns `{ "ok": true }`
-- [ ] `curl -X POST http://localhost/otp/generate -H 'Content-Type: application/json' -d '{"userId":"test1"}'` returns `200`
-- [ ] `curl -X POST http://localhost/otp/verify ...` with the correct code returns `200`
-- [ ] Sending 4 consecutive generate requests returns `429` on the 4th (rate limit hit)
-- [ ] Stopping one API container (`docker stop`) and re-running curl still succeeds (NGINX failover)
-- [ ] Docker image size is under 200 MB (`docker image ls`)
+- [x] `docker build -f apps/api/Dockerfile .` completes successfully from repo root
+- [x] `docker compose up` starts all 5 containers (redis, api_1/2/3, nginx)
+- [x] `curl http://localhost/health` returns `{ "ok": true }`
+- [x] `curl -X POST http://localhost/otp/generate -H 'Content-Type: application/json' -d '{"userId":"test1"}'` returns `200`
+- [x] `curl -X POST http://localhost/otp/verify ...` with the correct code returns `200`
+- [x] Sending 4 consecutive generate requests returns `429` on the 4th (rate limit hit)
+- [x] Stopping one API container (`docker stop`) and re-running curl still succeeds (NGINX failover)
+- [x] Docker image size is under 200 MB — actual: **63 MB** (`docker image ls`)
 
 ---
 

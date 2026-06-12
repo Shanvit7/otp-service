@@ -1,21 +1,20 @@
-import { OTP, RATE_LIMIT, REDIS } from '@/constants';
+import { OTP, RATE_LIMIT } from '@/constants';
 import { generateOtpCode } from '@/otp/generate';
 import { redis } from '@/redis/client';
 import { generateOtpScript } from '@/redis/scripts';
 import { RedisKeys } from '@/redis-keys';
 import type { GenerateResult, RateLimitWindow } from '@/types';
 
-const prefix = `${REDIS.KEY_PREFIX}:`;
-
 export const generateOtp = async (userId: string): Promise<GenerateResult> => {
 	const code = generateOtpCode();
 
+	// ioredis v5 applies keyPrefix to eval KEYS automatically — pass bare keys
 	const keys = [
-		`${prefix}${RedisKeys.rateLimit(userId, 'minute')}`,
-		`${prefix}${RedisKeys.rateLimit(userId, 'hour')}`,
-		`${prefix}${RedisKeys.rateLimit(userId, 'day')}`,
-		`${prefix}${RedisKeys.otpCode(userId)}`,
-		`${prefix}${RedisKeys.otpAttempts(userId)}`,
+		RedisKeys.rateLimit(userId, 'minute'),
+		RedisKeys.rateLimit(userId, 'hour'),
+		RedisKeys.rateLimit(userId, 'day'),
+		RedisKeys.otpCode(userId),
+		RedisKeys.otpAttempts(userId),
 	];
 
 	const args = [

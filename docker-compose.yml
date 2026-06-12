@@ -1,0 +1,49 @@
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api_1: &api_base
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV:         production
+      PORT:             3000
+      REDIS_URL:        redis://redis:6379
+      REDIS_KEY_PREFIX: otp
+      OTP_TTL_SECONDS:  300
+      OTP_MAX_ATTEMPTS: 5
+      RATE_LIMIT_MINUTE: 3
+      RATE_LIMIT_HOUR:   10
+      RATE_LIMIT_DAY:    20
+      LOG_LEVEL:         info
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  api_2:
+    <<: *api_base
+
+  api_3:
+    <<: *api_base
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api_1
+      - api_2
+      - api_3
