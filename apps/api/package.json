@@ -11,8 +11,11 @@
 		"clean": "rm -rf dist *.tsbuildinfo"
 	},
 	"dependencies": {
+		"@hono/node-server": "^1.x",
 		"@otp-service/core": "workspace:*",
-		"@otp-service/logger": "workspace:*"
+		"@otp-service/logger": "workspace:*",
+		"hono": "^4.x",
+		"zod": "^3.x"
 	},
 	"devDependencies": {
 		"@types/node": "^22.0.0",

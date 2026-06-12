@@ -229,16 +229,16 @@ apps/api/src/
 
 ## Exit Criteria
 
-- [ ] `hono`, `@hono/node-server`, `zod` added to `apps/api` dependencies
-- [ ] `validation/schemas.ts` exports `generateRequestSchema` and `verifyRequestSchema`
-- [ ] `middleware/error-handler.ts` exports the `onError` handler
-- [ ] `routes/health.ts` handles `GET /health`
-- [ ] `routes/otp.ts` handles `POST /otp/generate` and `POST /otp/verify` per status table above
-- [ ] `app.ts` exports `createApp()` with all routes and middleware wired
-- [ ] `index.ts` starts the server using `SERVER.PORT` and `SERVER.HOST`
-- [ ] `pnpm -r typecheck` passes
-- [ ] `pnpm -r build` succeeds
-- [ ] Manual smoke test: `pnpm dev` in `apps/api`, `curl -X POST localhost:3000/otp/generate -d '{"userId":"u1"}'` returns `200`
+- [x] `hono`, `@hono/node-server`, `zod` added to `apps/api` dependencies
+- [x] `validation/schemas.ts` exports `generateRequestSchema` and `verifyRequestSchema`
+- [x] `middleware/error-handler.ts` exports the `onError` handler
+- [x] `routes/health.ts` handles `GET /health`
+- [x] `routes/otp.ts` handles `POST /otp/generate` and `POST /otp/verify` per status table above
+- [x] `app.ts` exports `createApp()` with all routes and middleware wired
+- [x] `index.ts` starts the server using `SERVER.PORT` and `SERVER.HOST`
+- [x] `pnpm -r typecheck` passes
+- [x] `pnpm -r build` succeeds
+- [x] Manual smoke test: `pnpm dev` in `apps/api`, `curl -X POST localhost:3000/otp/generate -d '{"userId":"u1"}'` returns `200`
 
 ---
 
