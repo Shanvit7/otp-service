@@ -1,5 +1,6 @@
 import { generateOtp, verifyOtp } from '@otp-service/core';
 import { Hono } from 'hono';
+import { otpGenerateCounter, otpVerifyCounter } from '@/metrics';
 import { generateRequestSchema, verifyRequestSchema } from '@/validation/schemas';
 
 export const otpRouter = new Hono();
@@ -16,6 +17,7 @@ otpRouter.post('/generate', async (c) => {
 	const result = await generateOtp(parsed.data.userId);
 
 	if (!result.ok) {
+		otpGenerateCounter.inc({ result: 'rate_limited' });
 		return c.json(
 			{
 				ok: false,
@@ -27,6 +29,7 @@ otpRouter.post('/generate', async (c) => {
 		);
 	}
 
+	otpGenerateCounter.inc({ result: 'ok' });
 	return c.json({ ok: true, otpTtlSeconds: result.otpTtlSeconds }, 200);
 });
 
@@ -47,9 +50,10 @@ otpRouter.post('/verify', async (c) => {
 			MAX_ATTEMPTS_EXCEEDED: 429,
 			OTP_NOT_FOUND: 404,
 		} as const;
-
+		otpVerifyCounter.inc({ result: result.reason.toLowerCase() });
 		return c.json({ ok: false, code: result.reason }, statusMap[result.reason]);
 	}
 
+	otpVerifyCounter.inc({ result: 'ok' });
 	return c.json({ ok: true }, 200);
 });

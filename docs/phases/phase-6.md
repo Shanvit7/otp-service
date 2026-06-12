@@ -183,13 +183,13 @@ apps/api/src/
 
 ## Exit Criteria
 
-- [ ] Every request log line contains `requestId`, `method`, `path`, `status`, `durationMs`
-- [ ] Starting the server with an invalid `REDIS_URL` exits with code `1` and a `fatal` log message
-- [ ] `docker stop <api_container>` results in a `Graceful shutdown complete` log line (no mid-request kill)
-- [ ] `pnpm test` runs all test cases in §6.4
-- [ ] All test cases pass against a live Redis instance
-- [ ] `pnpm -r typecheck` still passes
-- [ ] `pnpm lint` reports no errors
+- [x] Every request log line contains `requestId`, `method`, `path`, `status`, `durationMs`
+- [x] Starting the server with an invalid `REDIS_URL` exits with code `1` and a `fatal` log message
+- [x] `docker stop <api_container>` results in a `Graceful shutdown complete` log line (no mid-request kill)
+- [x] `pnpm test` runs all test cases in §6.4
+- [x] All test cases pass against a live Redis instance (12/12 ✅)
+- [x] `pnpm -r typecheck` still passes
+- [x] `pnpm lint` reports no errors
 
 ---
 

@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: otp-api
+    static_configs:
+      - targets:
+          - api_1:3000
+          - api_2:3000
+          - api_3:3000
+    metrics_path: /metrics

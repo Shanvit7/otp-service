@@ -16,12 +16,12 @@ services:
       dockerfile: apps/api/Dockerfile
     restart: unless-stopped
     environment:
-      NODE_ENV:         production
-      PORT:             3000
-      REDIS_URL:        redis://redis:6379
-      REDIS_KEY_PREFIX: otp
-      OTP_TTL_SECONDS:  300
-      OTP_MAX_ATTEMPTS: 5
+      NODE_ENV:          production
+      PORT:              3000
+      REDIS_URL:         redis://redis:6379
+      REDIS_KEY_PREFIX:  otp
+      OTP_TTL_SECONDS:   300
+      OTP_MAX_ATTEMPTS:  5
       RATE_LIMIT_MINUTE: 3
       RATE_LIMIT_HOUR:   10
       RATE_LIMIT_DAY:    20
@@ -47,3 +47,53 @@ services:
       - api_1
       - api_2
       - api_3
+
+  # ─── Observability ────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  loki:
+    image: grafana/loki:latest
+    restart: unless-stopped
+    ports:
+      - '3100:3100'
+    volumes:
+      - ./observability/loki.yml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./observability/promtail.yml:/etc/promtail/config.yml:ro
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - '3001:3000'
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: 'true'
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - loki
+
+volumes:
+  grafana_data:
+  loki_data:

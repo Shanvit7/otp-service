@@ -8,17 +8,23 @@
 		"build": "tsup",
 		"dev": "tsup --watch",
 		"typecheck": "tsc --noEmit",
-		"clean": "rm -rf dist *.tsbuildinfo"
+		"clean": "rm -rf dist *.tsbuildinfo",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.x",
 		"@otp-service/core": "workspace:*",
 		"@otp-service/logger": "workspace:*",
 		"hono": "^4.x",
+		"prom-client": "^15.0.0",
 		"zod": "^3.x"
 	},
 	"devDependencies": {
 		"@types/node": "^22.0.0",
-		"typescript": "^5.5.0"
+		"ioredis": "^5.0.0",
+		"typescript": "^5.5.0",
+		"vite-tsconfig-paths": "^5.0.0",
+		"vitest": "^2.0.0"
 	}
 }

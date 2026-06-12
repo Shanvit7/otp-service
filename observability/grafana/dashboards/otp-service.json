@@ -1,0 +1,286 @@
+{
+	"title": "OTP Service",
+	"uid": "otp-service",
+	"schemaVersion": 38,
+	"version": 1,
+	"refresh": "5s",
+	"time": { "from": "now-15m", "to": "now" },
+	"timezone": "browser",
+	"tags": ["otp-service"],
+	"panels": [
+		{
+			"id": 1,
+			"type": "stat",
+			"title": "OTPs Generated (1h)",
+			"gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 },
+			"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "sum(increase(otp_generate_total[1h]))",
+					"refId": "A"
+				}
+			],
+			"options": {
+				"reduceOptions": { "calcs": ["lastNotNull"] },
+				"colorMode": "background",
+				"graphMode": "area",
+				"orientation": "auto"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": { "mode": "thresholds" },
+					"thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
+					"unit": "short"
+				}
+			}
+		},
+		{
+			"id": 2,
+			"type": "stat",
+			"title": "Verified OK (1h)",
+			"gridPos": { "x": 6, "y": 0, "w": 6, "h": 4 },
+			"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "sum(increase(otp_verify_total{result=\"ok\"}[1h]))",
+					"refId": "A"
+				}
+			],
+			"options": {
+				"reduceOptions": { "calcs": ["lastNotNull"] },
+				"colorMode": "background",
+				"graphMode": "area",
+				"orientation": "auto"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": { "mode": "thresholds" },
+					"thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+					"unit": "short"
+				}
+			}
+		},
+		{
+			"id": 3,
+			"type": "stat",
+			"title": "Rate Limited (1h)",
+			"gridPos": { "x": 12, "y": 0, "w": 6, "h": 4 },
+			"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "sum(increase(otp_generate_total{result=\"rate_limited\"}[1h]))",
+					"refId": "A"
+				}
+			],
+			"options": {
+				"reduceOptions": { "calcs": ["lastNotNull"] },
+				"colorMode": "background",
+				"graphMode": "area",
+				"orientation": "auto"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": { "mode": "thresholds" },
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{ "color": "green", "value": null },
+							{ "color": "yellow", "value": 5 },
+							{ "color": "red", "value": 20 }
+						]
+					},
+					"unit": "short"
+				}
+			}
+		},
+		{
+			"id": 4,
+			"type": "stat",
+			"title": "Failed Verifications (1h)",
+			"gridPos": { "x": 18, "y": 0, "w": 6, "h": 4 },
+			"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "sum(increase(otp_verify_total{result!=\"ok\"}[1h]))",
+					"refId": "A"
+				}
+			],
+			"options": {
+				"reduceOptions": { "calcs": ["lastNotNull"] },
+				"colorMode": "background",
+				"graphMode": "area",
+				"orientation": "auto"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": { "mode": "thresholds" },
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{ "color": "green", "value": null },
+							{ "color": "yellow", "value": 5 },
+							{ "color": "red", "value": 20 }
+						]
+					},
+					"unit": "short"
+				}
+			}
+		},
+		{
+			"id": 5,
+			"type": "timeseries",
+			"title": "Generate Rate (req/s)",
+			"gridPos": { "x": 0, "y": 4, "w": 12, "h": 8 },
+			"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "sum by(result) (rate(otp_generate_total[1m]))",
+					"legendFormat": "{{result}}",
+					"refId": "A"
+				}
+			],
+			"options": {
+				"tooltip": { "mode": "multi" },
+				"legend": {
+					"displayMode": "table",
+					"placement": "bottom",
+					"calcs": ["lastNotNull", "mean"]
+				}
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": { "mode": "palette-classic" },
+					"custom": { "lineWidth": 2, "fillOpacity": 10, "showPoints": "never" },
+					"unit": "reqps"
+				}
+			}
+		},
+		{
+			"id": 6,
+			"type": "timeseries",
+			"title": "Verify Outcomes (req/s)",
+			"gridPos": { "x": 12, "y": 4, "w": 12, "h": 8 },
+			"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "sum by(result) (rate(otp_verify_total[1m]))",
+					"legendFormat": "{{result}}",
+					"refId": "A"
+				}
+			],
+			"options": {
+				"tooltip": { "mode": "multi" },
+				"legend": {
+					"displayMode": "table",
+					"placement": "bottom",
+					"calcs": ["lastNotNull", "mean"]
+				}
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": { "mode": "palette-classic" },
+					"custom": { "lineWidth": 2, "fillOpacity": 10, "showPoints": "never" },
+					"unit": "reqps"
+				}
+			}
+		},
+		{
+			"id": 7,
+			"type": "timeseries",
+			"title": "HTTP Latency p50 / p95 / p99",
+			"gridPos": { "x": 0, "y": 12, "w": 12, "h": 8 },
+			"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))",
+					"legendFormat": "p50",
+					"refId": "A"
+				},
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))",
+					"legendFormat": "p95",
+					"refId": "B"
+				},
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))",
+					"legendFormat": "p99",
+					"refId": "C"
+				}
+			],
+			"options": {
+				"tooltip": { "mode": "multi" },
+				"legend": {
+					"displayMode": "table",
+					"placement": "bottom",
+					"calcs": ["lastNotNull", "mean"]
+				}
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": { "mode": "palette-classic" },
+					"custom": { "lineWidth": 2, "fillOpacity": 6, "showPoints": "never" },
+					"unit": "s"
+				}
+			}
+		},
+		{
+			"id": 8,
+			"type": "timeseries",
+			"title": "Node.js Heap Used",
+			"gridPos": { "x": 12, "y": 12, "w": 12, "h": 8 },
+			"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "prometheus", "uid": "prometheus-ds" },
+					"expr": "nodejs_heap_size_used_bytes",
+					"legendFormat": "{{instance}}",
+					"refId": "A"
+				}
+			],
+			"options": {
+				"tooltip": { "mode": "multi" },
+				"legend": { "displayMode": "table", "placement": "bottom", "calcs": ["lastNotNull"] }
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": { "mode": "palette-classic" },
+					"custom": { "lineWidth": 2, "fillOpacity": 10, "showPoints": "never" },
+					"unit": "bytes"
+				}
+			}
+		},
+		{
+			"id": 9,
+			"type": "logs",
+			"title": "Live API Logs",
+			"gridPos": { "x": 0, "y": 20, "w": 24, "h": 10 },
+			"datasource": { "type": "loki", "uid": "loki-ds" },
+			"targets": [
+				{
+					"datasource": { "type": "loki", "uid": "loki-ds" },
+					"expr": "{service=~\"api_.+\"}",
+					"refId": "A"
+				}
+			],
+			"options": {
+				"dedupStrategy": "none",
+				"enableLogDetails": true,
+				"prettifyLogMessage": false,
+				"showCommonLabels": false,
+				"showLabels": true,
+				"showTime": true,
+				"sortOrder": "Descending",
+				"wrapLogMessage": false
+			}
+		}
+	]
+}
