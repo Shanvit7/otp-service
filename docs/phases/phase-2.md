@@ -202,13 +202,13 @@ could silently affect the API. Each package owns its own constants.
 
 ## Exit Criteria
 
-- [ ] `packages/core/src/constants.ts` exists with `REDIS`, `OTP`, `RATE_LIMIT` groups
-- [ ] `apps/api/src/constants.ts` exists with `APP`, `SERVER` groups
-- [ ] `packages/core/src/types.ts` exists with all types listed above
-- [ ] `packages/core/src/redis-keys.ts` exists with `RedisKeys` factory
-- [ ] `packages/core/src/index.ts` re-exports all public types and `RedisKeys`
-- [ ] `pnpm -r typecheck` still passes (no logic to break yet)
-- [ ] No file outside `constants.ts` files references `process.env`
+- [x] `packages/core/src/constants.ts` exists with `REDIS`, `OTP`, `RATE_LIMIT` groups
+- [x] `apps/api/src/constants.ts` exists with `APP`, `SERVER` groups
+- [x] `packages/core/src/types.ts` exists with all types listed above
+- [x] `packages/core/src/redis-keys.ts` exists with `RedisKeys` factory
+- [x] `packages/core/src/index.ts` re-exports all public types and `RedisKeys`
+- [x] `pnpm -r typecheck` still passes (no logic to break yet)
+- [x] No file outside `constants.ts` files references `process.env`
 
 ---
 

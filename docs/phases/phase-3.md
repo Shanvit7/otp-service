@@ -267,15 +267,15 @@ packages/core/src/
 
 ## Exit Criteria
 
-- [ ] `ioredis` added to `packages/core` dependencies, `pnpm install` clean
-- [ ] `redis/client.ts` exports a singleton `redis` of type `Redis`
-- [ ] `otp/generate.ts` exports `generateOtpCode(): string`
-- [ ] `redis/scripts.ts` defines and exports `generateOtpScript` and `verifyOtpScript` as ioredis `defineCommand`-compatible Lua strings
-- [ ] `services/generateOtp.ts` exports `generateOtp(userId: string): Promise<GenerateResult>`
-- [ ] `services/verifyOtp.ts` exports `verifyOtp(userId: string, candidateCode: string): Promise<VerifyResult>`
-- [ ] `index.ts` barrel exports match the spec above
-- [ ] `pnpm -r typecheck` passes
-- [ ] `pnpm -r build` succeeds and `packages/core/dist/index.js` contains compiled output
+- [x] `ioredis` added to `packages/core` dependencies, `pnpm install` clean
+- [x] `redis/client.ts` exports a singleton `redis` of type `Redis`
+- [x] `otp/generate.ts` exports `generateOtpCode(): string`
+- [x] `redis/scripts.ts` defines and exports `generateOtpScript` and `verifyOtpScript` as ioredis `defineCommand`-compatible Lua strings
+- [x] `services/generateOtp.ts` exports `generateOtp(userId: string): Promise<GenerateResult>`
+- [x] `services/verifyOtp.ts` exports `verifyOtp(userId: string, candidateCode: string): Promise<VerifyResult>`
+- [x] `index.ts` barrel exports match the spec above
+- [x] `pnpm -r typecheck` passes
+- [x] `pnpm -r build` succeeds and `packages/core/dist/index.js` contains compiled output
 
 ---
 

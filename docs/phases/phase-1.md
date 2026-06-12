@@ -19,9 +19,9 @@ The repo already has a partially-assembled scaffold:
 | `biome.json` | ✅ present |
 | `.husky/pre-commit` + `lint-staged` | ✅ wired |
 | `packages/logger` — pino logger + constants | ✅ built & published |
-| `packages/core` — re-exports logger only | ⚠️ skeleton, not real |
-| `apps/api` directory | ❌ missing |
-| `tsconfig.json` path aliases (`@/*`) per package | ⚠️ needs audit |
+| `packages/core` — re-exports logger only | ✅ reset to clean barrel |
+| `apps/api` directory | ✅ scaffolded |
+| `tsconfig.json` path aliases (`@/*`) per package | ✅ audited & confirmed |
 | `tsup.base.ts` shared build config | ✅ present |
 
 Phase 1 closes every gap in the scaffold **before a single line of domain
@@ -119,13 +119,13 @@ empty stubs gives us a true baseline.
 
 ## Exit Criteria
 
-- [ ] `apps/api/` directory exists with `package.json`, `tsconfig.json`, `tsup.config.ts`, `src/index.ts`
-- [ ] All three packages have `@/*` → `./src/*` path alias in `tsconfig.json`
-- [ ] `packages/core/src/index.ts` is an empty barrel (`export {}`)
-- [ ] `pnpm install` completes with no errors
-- [ ] `pnpm -r typecheck` passes across all packages
-- [ ] `pnpm -r build` produces `dist/` in all packages
-- [ ] `pnpm lint` reports no errors
+- [x] `apps/api/` directory exists with `package.json`, `tsconfig.json`, `tsup.config.ts`, `src/index.ts`
+- [x] All three packages have `@/*` → `./src/*` path alias in `tsconfig.json`
+- [x] `packages/core/src/index.ts` is an empty barrel (`export {}`)
+- [x] `pnpm install` completes with no errors
+- [x] `pnpm -r typecheck` passes across all packages
+- [x] `pnpm -r build` produces `dist/` in all packages
+- [x] `pnpm lint` reports no errors
 
 ---
 
